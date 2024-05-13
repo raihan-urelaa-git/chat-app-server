@@ -3,6 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/auth");
 const messageRoutes = require("./routes/messages");
+const conversationsRoutes = require("./routes/conversations");
 const app = express();
 const socket = require("socket.io");
 require("dotenv").config();
@@ -23,6 +24,7 @@ mongoose
   });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/conversations", conversationsRoutes);
 app.use("/api/messages", messageRoutes);
 
 const server = app.listen(process.env.PORT, () =>
@@ -44,6 +46,7 @@ io.on("connection", (socket) => {
 
   socket.on("send-msg", (data) => {
     const sendUserSocket = onlineUsers.get(data.to);
+    console.log("send user====",sendUserSocket)
     if (sendUserSocket) {
       socket.to(sendUserSocket).emit("msg-recieve", data.msg);
     }
