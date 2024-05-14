@@ -45,10 +45,9 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send-msg", (data) => {
-    const sendUserSocket = onlineUsers.get(data.to);
-    console.log("send user====",sendUserSocket)
+    const sendUserSocket = onlineUsers.get(data.from);
     if (sendUserSocket) {
-      socket.to(sendUserSocket).emit("msg-recieve", data.msg);
+      io.emit("msg-recieve", data);
     }
   });
 });
