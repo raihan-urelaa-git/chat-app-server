@@ -1,5 +1,5 @@
 const {
-  login,
+  getChatProfile,
   register,
   getAllUsers,
   logOut,
@@ -7,7 +7,7 @@ const {
 
 const router = require("express").Router();
 
-router.post("/login", login);
+router.get("/profile/:id", getChatProfile);
 router.post("/register", register);
 router.get("/allusers/:id", getAllUsers);
 router.get("/logout/:id", logOut);

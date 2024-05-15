@@ -1,11 +1,10 @@
 const User = require("../models/userModel");
 
-module.exports.login = async (req, res, next) => {
+module.exports.getChatProfile = async (req, res, next) => {
   try {
-    const { userId } = req.body;
-    const user = await User.findOne({ userId });
-    if (!user)
-      return res.json({ msg: "Incorrect Username or Password", status: false });
+    const { id } = req.params;
+    const user = await User.findOne({ _id: id });
+    if (!user) return res.json({ msg: "Not found user", status: false });
     return res.json({ status: true, user });
   } catch (ex) {
     next(ex);
@@ -14,10 +13,10 @@ module.exports.login = async (req, res, next) => {
 
 module.exports.register = async (req, res, next) => {
   try {
-    const {userId} = req.body;
-    const userCheck = await User.findOne({ userId });
-    if (userCheck)
-      return res.json({ msg: "Username already used", status: false });
+    // const {userId} = req.body;
+    // const userCheck = await User.findOne({ userId });
+    // if (userCheck)
+    //   return res.json({ msg: "Username already used", status: false });
     const user = await User.create(req.body);
     return res.json({ status: true, user });
   } catch (ex) {
@@ -27,10 +26,11 @@ module.exports.register = async (req, res, next) => {
 
 module.exports.getAllUsers = async (req, res, next) => {
   try {
-    const users = await User.find({ userId: { $ne: req.params.id } }).select([
-      "username",
+    const { id } = req.params;
+    const users = await User.find({ _id: { $ne: id } }).select([
+      "fullName",
       "_id",
-      "userId"
+      "userId",
     ]);
     return res.json(users);
   } catch (ex) {

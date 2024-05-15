@@ -7,8 +7,9 @@ module.exports.createConversation = async (req, res, next) => {
     //   const userCheck = await User.findOne({ userId });
     //   if (userCheck)
     //     return res.json({ msg: "Username already used", status: false });
-    const user = await Conversations.create({ users });
-    return res.json({ status: true, user });
+    const user =await ( await Conversations.create({ users })).populate('users');
+    
+    return res.json({ status: true, user:user });
   } catch (ex) {
     next(ex);
   }
