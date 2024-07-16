@@ -7,11 +7,10 @@ module.exports.createConversation = async (req, res, next) => {
     let hasConversation = await Conversations.findOne({ users });
 
     if (!hasConversation) {
-      hasConversation = 
-        await Conversations.create({ users });
+      hasConversation = await Conversations.create({ users });
     }
-    hasConversation = await hasConversation.populate("users")
-    return res.json({ status: true, user: hasConversation });
+    hasConversation = await hasConversation.populate("users");
+    return res.json({ status: true, ...hasConversation._doc });
   } catch (ex) {
     next(ex);
   }
