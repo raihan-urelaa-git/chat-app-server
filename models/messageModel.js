@@ -4,7 +4,7 @@ const MessageSchema = mongoose.Schema(
   {
     message: {
       type: String,
-      required: true,
+      default: "",
     },
     conversationId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -15,6 +15,15 @@ const MessageSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
       required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+      enum: ["text", "image", "video", "audio", "documents"],
+    },
+    files: {
+      type: [String],
+      default: [],
     },
   },
   {
